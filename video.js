@@ -1,5 +1,21 @@
-const loadCategories = () => {
+const time = (time) => {
+    const hour = parseInt(time / 3600);
+    const remainingSecond = time % 3600;
+    const min = parseInt(remainingSecond / 60);
+    const second = remainingSecond % 60;
+    return (`${hour} hour ${min} min ${second} second ago`);
+}
 
+
+
+
+
+
+
+
+
+
+const loadCategories = () => {
     fetch('https://openapi.programming-hero.com/api/phero-tube/categories')
         .then(res => res.json())
         .then(data => displayCategories(data.categories))
@@ -37,13 +53,29 @@ const displayVideos = (videos) => {
         const card = document.createElement('div')
         card.classList.add('card')
         card.innerHTML = `
+
+
+
+
           <figure class="p-1 h-[200px] relative">
-    <img
-      src="${video.thumbnail}"
+   
+      <img src="${video.thumbnail}"
       alt="Shoes"
       class="rounded-xl w-full h-full object-cover" />
-      <span class="absolute right-2 bottom-2 text-white bg-black rounded p-2 m-3" >${video.others.posted_date} </span>
+
+
+      ${video.others.posted_date?.length == 0 ? "" : `<span class="absolute right-2 bottom-2 text-white bg-black rounded p-2 m-3" >${time(video.others.posted_date)} </span>`}
+
+
+
+     
+
           </figure>
+
+
+
+
+
  <div class="flex py-3 items-center"> 
    <div class="w-[30px] h-[30px] mr-3">
         <img src="${video.authors[0].profile_picture}" class="h-full w-full rounded-full object-cover" alt="">
@@ -67,7 +99,7 @@ const displayVideos = (videos) => {
     </div>
 
  </div>
-        
+
         `
         videosContainer.append(card)
     }
@@ -76,9 +108,6 @@ const displayVideos = (videos) => {
 
 
 
-
-
-
-
+//functions call
 loadCategories();
 loadVideos()
