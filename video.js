@@ -37,21 +37,33 @@ const displayVideos = (videos) => {
         const card = document.createElement('div')
         card.classList.add('card')
         card.innerHTML = `
-          <figure class="p-1 h-[200px]">
+          <figure class="p-1 h-[200px] relative">
     <img
       src="${video.thumbnail}"
       alt="Shoes"
       class="rounded-xl w-full h-full object-cover" />
-  </figure>
- <div class="flex py-3 "> 
+      <span class="absolute right-2 bottom-2 text-white bg-black rounded p-2 m-3" >${video.others.posted_date} </span>
+          </figure>
+ <div class="flex py-3 items-center"> 
    <div class="w-[30px] h-[30px] mr-3">
         <img src="${video.authors[0].profile_picture}" class="h-full w-full rounded-full object-cover" alt="">
    </div>
 
     <div>
         <h1 class="font-bold text-md">${video.title}</h1>
-        <p class="font-light text-sm my-2"> ${video.authors[0].profile_name}</p>
-        <p class="font-light text-sm">${video.others.views}</p>
+        <div class="flex justify-between items-center">
+
+         <div class="flex items-center ">
+          <p class="font-light text-sm mr-5"> ${video.authors[0].profile_name}</p>
+
+          ${video.authors[0].verified ? '<img src="https://img.icons8.com/?size=96&id=98A4yZTt9abw&format=png" class="w-2/20" alt="">' : ""}
+
+          
+         </div>
+
+
+          <p class="font-light text-sm">${video.others.views} views</p>
+        </div>
     </div>
 
  </div>
