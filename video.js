@@ -35,8 +35,8 @@ const displayCategories = (categories) => {
 
 const removeActiveButton = () => {
     const categoryButton = document.getElementsByClassName("category-btn");
-    for(const btn of categoryButton){
-       btn.classList.remove('active');
+    for (const btn of categoryButton) {
+        btn.classList.remove('active');
     }
 }
 
@@ -57,6 +57,33 @@ function loadCategoryVideos(categoryId) {
 
 }
 
+//load video details specifically
+
+function getVideoDetails(videoId) {
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`)
+        .then(res => res.json())
+        .then(data => displayVideoDetails(data.video.description))
+        .catch(error => console.log(error))
+}
+
+
+const displayVideoDetails = (details) => {
+    console.log(details);
+
+    const modalContainer = document.getElementById('modal-content');
+    modalContainer.innerHTML = `
+
+<h1 class="mx-auto text-xl text-center"> Details </h1>
+
+<p class="p-3"> ${details} </p>
+
+    
+`
+
+    document.getElementById('showModal').click();
+
+
+}
 
 
 //load all the videos
@@ -91,7 +118,7 @@ const displayVideos = (videos) => {
     }
 
     for (const video of videos) {
-        console.log(video)
+        // console.log(video)
         const card = document.createElement('div')
         card.classList.add('card')
 
@@ -125,6 +152,7 @@ const displayVideos = (videos) => {
          </div>
           <p class="font-light text-sm">${video.others.views} views</p>
         </div>
+        <button onclick ="getVideoDetails('${video.video_id}')" class="btn flex justify-center mx-auto mt-5"> details </button>
     </div>
 
  </div>
