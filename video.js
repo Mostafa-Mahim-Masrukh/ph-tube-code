@@ -24,23 +24,36 @@ const displayCategories = (categories) => {
         //create the dyanmic buttons for categories 
         const buttonContainer = document.createElement('div');
         buttonContainer.innerHTML = `
-         <button onClick= "loadCategoryVideos(${category.category_id})" class="btn mr-5">
+         <button id="button-${category.category_id}" onClick= "loadCategoryVideos(${category.category_id})" class="btn mr-5 btn category-btn">
          ${category.category}
          </button>
         `
-
         const categoryDiv = document.getElementById('category-section')
         categoryDiv.append(buttonContainer); //music,drawing,comedy
     }
 }
 
+const removeActiveButton = () => {
+    const categoryButton = document.getElementsByClassName("category-btn");
+    for(const btn of categoryButton){
+       btn.classList.remove('active');
+    }
+}
+
+
 
 //load category wise videos
-function loadCategoryVideos(categoryId){
+function loadCategoryVideos(categoryId) {
+
     fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${categoryId}`)
-    .then(res => res.json())
-    .then(data => displayVideos(data.category)) //call the displayVideos function to show all videos
-    .catch(error => console.log(error))
+        .then(res => res.json())
+        .then(data => {
+            removeActiveButton();
+            const activeButton = document.getElementById(`button-${categoryId}`);//show active
+            activeButton.classList.add('active');
+            displayVideos(data.category)
+        }) //call the displayVideos function to show all videos
+        .catch(error => console.log(error))
 
 }
 
@@ -62,21 +75,18 @@ const displayVideos = (videos) => {
     videosContainer.innerHTML = ""; //clear the videos container
 
 
-//if there is no videos , length then it will show nothing
-    if(videos.length == 0){
+    //if there is no videos , length then it will show nothing
+    if (videos.length == 0) {
         videosContainer.classList.remove('grid')
         videosContainer.innerHTML = `
-        
 <div class=" h-[400px] flex flex-col justify-center items-center mx-auto">
     <img class= "h-[150px] " src="assets/Icon.png" alt="">
     <h1 class=" p-5 text-xl text-center font-extrabold w-10/12">Opss! Sorry there is no content here</h1>
 </div>
-        
         `
         return;
     }
-
-    else{
+    else {
         videosContainer.classList.add('grid');
     }
 
@@ -111,10 +121,8 @@ const displayVideos = (videos) => {
 
           ${video.authors[0]?.verified ? '<img src="https://img.icons8.com/?size=96&id=98A4yZTt9abw&format=png" class="w-2/20" alt="">' : ""}
 
-          
+        
          </div>
-
-
           <p class="font-light text-sm">${video.others.views} views</p>
         </div>
     </div>
@@ -126,8 +134,6 @@ const displayVideos = (videos) => {
     }
 
 }
-
-
 
 //functions call
 loadCategories();
