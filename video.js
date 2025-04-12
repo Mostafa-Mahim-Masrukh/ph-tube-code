@@ -87,9 +87,9 @@ const displayVideoDetails = (details) => {
 
 
 //load all the videos
-const loadVideos = () => {
+const loadVideos = (searchValue = "") => {
 
-    fetch('https://openapi.programming-hero.com/api/phero-tube/videos')
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchValue }`)
         .then(res => res.json())
         .then(data => displayVideos(data.videos)) //call the displayVideos function to show all videos
         .catch(error => console.log(error))
@@ -162,6 +162,15 @@ const displayVideos = (videos) => {
     }
 
 }
+
+
+document.getElementById('search-box').addEventListener('keyup', (event)=>{
+
+    loadVideos(event.target.value);
+})
+
+
+
 
 //functions call
 loadCategories();
